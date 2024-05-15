@@ -41,10 +41,6 @@ public class OrderDetail {
         return orderDetailId;
     }
 
-    public void setOrderDetailId(Long orderDetailId) {
-        this.orderDetailId = orderDetailId;
-    }
-
     public Product getProduct() {
         return product;
     }

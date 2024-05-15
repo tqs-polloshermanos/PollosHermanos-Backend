@@ -35,10 +35,6 @@ public class Ingredient {
         return ingredientId;
     }
 
-    public void setIngredientId(Long ingredientId) {
-        this.ingredientId = ingredientId;
-    }
-
     public String getIngredientName() {
         return ingredientName;
     }

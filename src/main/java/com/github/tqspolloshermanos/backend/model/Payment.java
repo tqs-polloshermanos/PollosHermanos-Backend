@@ -54,10 +54,6 @@ public class Payment {
         return paymentId;
     }
 
-    public void setPaymentId(Long paymentId) {
-        this.paymentId = paymentId;
-    }
-
     public Order getOrder() {
         return order;
     }

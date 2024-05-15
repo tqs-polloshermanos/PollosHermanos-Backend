@@ -37,10 +37,6 @@ public class OrderStatus {
         return orderStatusId;
     }
 
-    public void setOrderStatusId(Long orderStatusId) {
-        this.orderStatusId = orderStatusId;
-    }
-
     public Order getOrder() {
         return order;
     }

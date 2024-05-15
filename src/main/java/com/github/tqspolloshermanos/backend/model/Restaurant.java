@@ -57,10 +57,6 @@ public class Restaurant {
         return restaurantId;
     }
 
-    public void setRestaurantId(Long restaurantId) {
-        this.restaurantId = restaurantId;
-    }
-
     public String getRestaurantName() {
         return restaurantName;
     }

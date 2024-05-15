@@ -37,10 +37,6 @@ public class ProductIngredients {
         return productIngredientsId;
     }
 
-    public void setProductIngredientsId(Long productIngredientsId) {
-        this.productIngredientsId = productIngredientsId;
-    }
-
     public Ingredient getIngredient() {
         return ingredient;
     }
