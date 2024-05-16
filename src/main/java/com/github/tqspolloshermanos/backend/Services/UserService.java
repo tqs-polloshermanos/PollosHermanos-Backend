@@ -29,4 +29,15 @@ public class UserService {
     public void deleteUserById(Long userId) {
         userRepository.deleteById(userId);
     }
+
+    public Optional<User> authenticateUser(String email, String password) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.getPassword().equals(password)) { // In real applications, use hashed passwords
+                return Optional.of(user);
+            }
+        }
+        return Optional.empty();
+    }
 }
