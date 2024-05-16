@@ -24,7 +24,7 @@ public class RestaurantService {
     }
 
     public List<Restaurant> getRestaurantsByCuisineType(CuisineType cuisineType) {
-        return restaurantRepository.findByCuisineType(cuisineType);
+        return restaurantRepository.findAllByCuisineType(cuisineType);
     }
 
     public Restaurant saveRestaurant(Restaurant restaurant) {
