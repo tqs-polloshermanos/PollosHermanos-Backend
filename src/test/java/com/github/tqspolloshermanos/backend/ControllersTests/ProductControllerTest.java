@@ -1,8 +1,10 @@
 package com.github.tqspolloshermanos.backend.ControllersTests;
 
 import com.github.tqspolloshermanos.backend.Controllers.ProductController;
+import com.github.tqspolloshermanos.backend.Entities.ECuisineType;
 import com.github.tqspolloshermanos.backend.Entities.Product;
 import com.github.tqspolloshermanos.backend.Entities.ProductIngredient;
+import com.github.tqspolloshermanos.backend.Entities.Restaurant;
 import com.github.tqspolloshermanos.backend.Services.ProductService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -47,6 +49,22 @@ public class ProductControllerTest {
 
         // Test controller endpoint
         mockMvc.perform(MockMvcRequestBuilders.get("/api/products/1/ingredients"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void testGetProductsByRestaurantId() throws Exception {
+        // Mock service response
+        List<Product> products = new ArrayList<>();
+        Restaurant restaurant = new Restaurant();
+        restaurant.setId(1L); // Set up a restaurant with ID 1
+        products.add(new Product("Product 1", ECuisineType.MEXICAN, restaurant, "Description 1", 10.0, "image1.jpg"));
+        products.add(new Product("Product 2", ECuisineType.MEXICAN, restaurant, "Description 2", 15.0, "image2.jpg"));
+        when(productService.findProductsByRestaurantId(Mockito.anyLong())).thenReturn(products);
+
+        // Test controller endpoint
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/products/restaurant/1")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 

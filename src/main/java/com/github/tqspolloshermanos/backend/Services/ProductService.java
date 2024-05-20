@@ -19,10 +19,6 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Product> findProductsByRestaurant(Long restaurantId) {
-        return productRepository.findByRestaurantId(restaurantId);
-    }
-
     public List<Product> findProductsByCuisineType(ECuisineType cuisineType) {
         return productRepository.findByCuisineType(cuisineType);
     }
@@ -33,5 +29,9 @@ public class ProductService {
 
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    public List<Product> findProductsByRestaurantId(Long restaurantId) {
+        return productRepository.findByRestaurantId(restaurantId);
     }
 }

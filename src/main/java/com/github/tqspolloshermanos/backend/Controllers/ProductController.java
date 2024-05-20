@@ -44,5 +44,14 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/restaurant/{restaurantId}")
+    public ResponseEntity<List<Product>> getProductsByRestaurantId(@PathVariable Long restaurantId) {
+        List<Product> products = productService.findProductsByRestaurantId(restaurantId);
+        if (products.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(products);
+    }
+
     // Other CRUD endpoints can be added as needed
 }
