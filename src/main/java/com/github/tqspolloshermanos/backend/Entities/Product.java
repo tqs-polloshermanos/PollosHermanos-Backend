@@ -39,6 +39,15 @@ public class Product {
     public Product() {
     }
 
+    public Product(String name, ECuisineType cuisineType, Restaurant restaurant, String description, double price, String imagePath) {
+        this.name = name;
+        this.cuisineType = cuisineType;
+        this.restaurant = restaurant;
+        this.description = description;
+        this.price = price;
+        this.imagePath = imagePath;
+    }
+
     // Getters and Setters
     public Long getId() {
         return id;

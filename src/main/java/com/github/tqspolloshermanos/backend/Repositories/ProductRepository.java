@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByRestaurantId(Long restaurantId);
-    List<Product> findByRestaurantCuisineType(ECuisineType cuisineType);
+
+    List<Product> findByCuisineType(ECuisineType cuisineType);
 }
