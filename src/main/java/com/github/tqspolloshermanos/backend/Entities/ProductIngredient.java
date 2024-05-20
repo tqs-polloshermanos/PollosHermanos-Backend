@@ -3,12 +3,12 @@ package com.github.tqspolloshermanos.backend.Entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "OrderDetails")
-public class OrderDetail {
+@Table(name = "Product_Ingredients")
+public class ProductIngredient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_detail_id")
+    @Column(name = "product_ingredient_id")
     private Long id;
 
     @ManyToOne
@@ -16,24 +16,14 @@ public class OrderDetail {
     private Product product;
 
     @ManyToOne
-    @JoinColumn(nullable = false, name = "order_id")
-    private Order order;
+    @JoinColumn(name = "ingredient_id")
+    private Ingredient ingredient;
 
     @Column(nullable = false, name = "quantity")
     private int quantity;
 
-    @Column(nullable = false, name = "price")
-    private double price;
-
     // Constructors
-    public OrderDetail() {
-    }
-
-    public OrderDetail(Product product, Order order, int quantity, double price) {
-        this.product = product;
-        this.order = order;
-        this.quantity = quantity;
-        this.price = price;
+    public ProductIngredient() {
     }
 
     // Getters and Setters
@@ -53,12 +43,12 @@ public class OrderDetail {
         this.product = product;
     }
 
-    public Order getOrder() {
-        return order;
+    public Ingredient getIngredient() {
+        return ingredient;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
     }
 
     public int getQuantity() {
@@ -67,13 +57,5 @@ public class OrderDetail {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 }

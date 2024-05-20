@@ -11,8 +11,8 @@ public class Ingredient {
     @Column(name = "ingredient_id")
     private Long id;
 
-    @Column(nullable = false, name = "ingredient_name")
-    private String ingredientName;
+    @Column(nullable = false, name = "name")
+    private String name;
 
     @Column(name = "description")
     private String description;
@@ -21,26 +21,26 @@ public class Ingredient {
     public Ingredient() {
     }
 
-    public Ingredient(String ingredientName, String description) {
-        this.ingredientName = ingredientName;
+    public Ingredient(String name, String description) {
+        this.name = name;
         this.description = description;
     }
 
     // Getters and Setters
-    public Long getIngredientId() {
+    public Long getId() {
         return id;
     }
 
-    public void setIngredientId(Long ingredientId) {
-        this.id = ingredientId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getIngredientName() {
-        return ingredientName;
+    public String getName() {
+        return name;
     }
 
-    public void setIngredientName(String ingredientName) {
-        this.ingredientName = ingredientName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -50,5 +50,5 @@ public class Ingredient {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }
+

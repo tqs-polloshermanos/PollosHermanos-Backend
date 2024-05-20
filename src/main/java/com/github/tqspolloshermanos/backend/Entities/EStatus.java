@@ -1,8 +1,6 @@
 package com.github.tqspolloshermanos.backend.Entities;
 
-import jakarta.persistence.*;
-
-public enum Status {
+public enum EStatus {
     PENDING,
     PROCESSING,
     DONE,

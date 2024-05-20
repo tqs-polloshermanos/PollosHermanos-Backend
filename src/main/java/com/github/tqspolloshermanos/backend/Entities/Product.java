@@ -1,6 +1,7 @@
 package com.github.tqspolloshermanos.backend.Entities;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Products")
@@ -11,12 +12,12 @@ public class Product {
     @Column(name = "product_id")
     private Long id;
 
-    @Column(nullable = false, name = "product_name")
-    private String productName;
+    @Column(nullable = false, name = "name")
+    private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "cuisine_type")
-    private CuisineType cuisineType;
+    private ECuisineType cuisineType;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
@@ -28,44 +29,38 @@ public class Product {
     @Column(nullable = false, name = "price")
     private double price;
 
-    @Column(name = "product_image_path")
-    private String productImagePath;
+    @Column(name = "image_path")
+    private String imagePath;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductIngredient> productIngredients;
 
     // Constructors
     public Product() {
     }
 
-    public Product(String productName, CuisineType cuisineType, Restaurant restaurant, String description, double price, String productImagePath) {
-        this.productName = productName;
-        this.cuisineType = cuisineType;
-        this.restaurant = restaurant;
-        this.description = description;
-        this.price = price;
-        this.productImagePath = productImagePath;
-    }
-
     // Getters and Setters
-    public Long getProductId() {
+    public Long getId() {
         return id;
     }
 
-    public void setProductId(Long productId) {
-        this.id = productId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public CuisineType getCuisineType() {
+    public ECuisineType getCuisineType() {
         return cuisineType;
     }
 
-    public void setCuisineType(CuisineType cuisineType) {
+    public void setCuisineType(ECuisineType cuisineType) {
         this.cuisineType = cuisineType;
     }
 
@@ -93,12 +88,19 @@ public class Product {
         this.price = price;
     }
 
-    public String getProductImagePath() {
-        return productImagePath;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setProductImagePath(String productImagePath) {
-        this.productImagePath = productImagePath;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
- }
+    public List<ProductIngredient> getProductIngredients() {
+        return productIngredients;
+    }
+
+    public void setProductIngredients(List<ProductIngredient> productIngredients) {
+        this.productIngredients = productIngredients;
+    }
+}

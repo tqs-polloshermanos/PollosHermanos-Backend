@@ -11,21 +11,21 @@ public class Restaurant {
     @Column(name = "restaurant_id")
     private Long id;
 
-    @Column(nullable = false, name = "restaurant_name")
-    private String restaurantName;
+    @Column(nullable = false, name = "name")
+    private String name;
 
     @Column(nullable = false, name = "address")
     private String address;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "cuisine_type")
-    private CuisineType cuisineType;
+    private ECuisineType cuisineType;
 
     @Column(name = "description")
     private String description;
 
-    @Column(nullable = false, name = "restaurant_image_path")
-    private String restaurantImagePath;
+    @Column(nullable = false, name = "image_path")
+    private String imagePath;
 
     @Column(name = "number_of_orders")
     private int numberOfOrders;
@@ -34,38 +34,30 @@ public class Restaurant {
     public Restaurant() {
     }
 
-    public Restaurant(String restaurantName, String address, CuisineType cuisineType, String description, String restaurantImagePath) {
-        this.restaurantName = restaurantName;
+    public Restaurant(String name, String address, ECuisineType cuisineType, String description, String imagePath, int numberOfOrders) {
+        this.name = name;
         this.address = address;
         this.cuisineType = cuisineType;
         this.description = description;
-        this.restaurantImagePath = restaurantImagePath;
-        this.numberOfOrders = 0;
-    }
-
-    public Restaurant(String restaurantName, String address, CuisineType cuisineType, String restaurantImagePath) {
-        this.restaurantName = restaurantName;
-        this.address = address;
-        this.cuisineType = cuisineType;
-        this.restaurantImagePath = restaurantImagePath;
-        this.numberOfOrders = 0;
+        this.imagePath = imagePath;
+        this.numberOfOrders = numberOfOrders;
     }
 
     // Getters and Setters
-    public Long getRestaurantId() {
+    public Long getId() {
         return id;
     }
 
-    public void setRestaurantId(Long restaurantId) {
-        this.id = restaurantId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getRestaurantName() {
-        return restaurantName;
+    public String getName() {
+        return name;
     }
 
-    public void setRestaurantName(String restaurantName) {
-        this.restaurantName = restaurantName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {
@@ -76,11 +68,11 @@ public class Restaurant {
         this.address = address;
     }
 
-    public CuisineType getCuisineType() {
+    public ECuisineType getCuisineType() {
         return cuisineType;
     }
 
-    public void setCuisineType(CuisineType cuisineType) {
+    public void setCuisineType(ECuisineType cuisineType) {
         this.cuisineType = cuisineType;
     }
 
@@ -92,12 +84,12 @@ public class Restaurant {
         this.description = description;
     }
 
-    public String getRestaurantImagePath() {
-        return restaurantImagePath;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setRestaurantImagePath(String restaurantImagePath) {
-        this.restaurantImagePath = restaurantImagePath;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public int getNumberOfOrders() {
@@ -107,12 +99,5 @@ public class Restaurant {
     public void setNumberOfOrders(int numberOfOrders) {
         this.numberOfOrders = numberOfOrders;
     }
-
-    public void incrementNumberOfOrders() {
-        if (this.numberOfOrders >= 9999) {
-            this.numberOfOrders = 0;
-        } else {
-            this.numberOfOrders++;
-        }
-    }
 }
+

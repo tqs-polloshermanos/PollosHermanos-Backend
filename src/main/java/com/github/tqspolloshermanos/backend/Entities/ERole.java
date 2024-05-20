@@ -1,8 +1,6 @@
 package com.github.tqspolloshermanos.backend.Entities;
 
-import jakarta.persistence.*;
-
-public enum RoleType {
+public enum ERole {
     ADMIN,
     CUSTOMER,
     EMPLOYEE

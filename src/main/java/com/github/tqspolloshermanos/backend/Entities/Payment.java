@@ -2,8 +2,6 @@ package com.github.tqspolloshermanos.backend.Entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime; // Importing LocalDateTime
-import java.time.LocalDate; // Importing LocalDate
 
 @Entity
 @Table(name = "Payments")
@@ -19,7 +17,7 @@ public class Payment {
     private Order order;
 
     @Column(nullable = false, name = "payment_date")
-    private LocalDateTime paymentDate;
+    private LocalDate paymentDate;
 
     @Column(nullable = false, name = "amount")
     private double amount;
@@ -40,7 +38,7 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(Order order, LocalDateTime paymentDate, double amount, String cardNumber, String cardHolderName, LocalDate cardExpiryDate, String cardCVV) {
+    public Payment(Order order, LocalDate paymentDate, double amount, String cardNumber, String cardHolderName, LocalDate cardExpiryDate, String cardCVV) {
         this.order = order;
         this.paymentDate = paymentDate;
         this.amount = amount;
@@ -51,12 +49,12 @@ public class Payment {
     }
 
     // Getters and Setters
-    public Long getPaymentId() {
+    public Long getId() {
         return id;
     }
 
-    public void setPaymentId(Long paymentId) {
-        this.id = paymentId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Order getOrder() {
@@ -67,11 +65,11 @@ public class Payment {
         this.order = order;
     }
 
-    public LocalDateTime getPaymentDate() {
+    public LocalDate getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(LocalDateTime paymentDate) {
+    public void setPaymentDate(LocalDate paymentDate) {
         this.paymentDate = paymentDate;
     }
 

@@ -1,6 +1,6 @@
 package com.github.tqspolloshermanos.backend.Entities;
 
-public enum CuisineType {
+public enum ECuisineType {
     MEXICAN,
     AMERICAN,
     ITALIAN,

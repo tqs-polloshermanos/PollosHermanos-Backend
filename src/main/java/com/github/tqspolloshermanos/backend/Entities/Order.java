@@ -2,6 +2,7 @@ package com.github.tqspolloshermanos.backend.Entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "Orders")
@@ -28,27 +29,31 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "status")
-    private Status status;
+    private EStatus status;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetails;
 
     // Constructors
     public Order() {
     }
 
-    public Order(User user, Restaurant restaurant, LocalDateTime orderDate, double totalAmount, Status status) {
+    public Order(User user, Restaurant restaurant, LocalDateTime orderDate, double totalAmount, EStatus status, List<OrderDetail> orderDetails) {
         this.user = user;
         this.restaurant = restaurant;
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
         this.status = status;
+        this.orderDetails = orderDetails;
     }
 
     // Getters and Setters
-    public Long getOrderId() {
+    public Long getId() {
         return id;
     }
 
-    public void setOrderId(Long orderId) {
-        this.id = orderId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -83,12 +88,19 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public Status getStatus() {
+    public EStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(EStatus status) {
         this.status = status;
     }
 
+    public List<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
 }
