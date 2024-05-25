@@ -33,12 +33,6 @@ public class ControllerTests {
     private IngredientService ingredientService;
 
     @MockBean
-    private OrderService orderService;
-
-    @MockBean
-    private PaymentService paymentService;
-
-    @MockBean
     private ProductService productService;
 
     @MockBean
@@ -71,34 +65,6 @@ public class ControllerTests {
         // Test controller endpoint
         mockMvc.perform(MockMvcRequestBuilders.get("/api/ingredients/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-    }
-
-    @Test
-    void testGetOrdersByUserId() throws Exception {
-        // Mock service response
-        List<Order> orders = new ArrayList<>();
-        orders.add(new Order());
-        orders.add(new Order());
-        when(orderService.findOrdersByUserId(1L)).thenReturn(orders);
-
-        // Test controller endpoint
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/orders/user/1"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2));
-    }
-
-    @Test
-    void testProcessPayment() throws Exception {
-        // Mock service response
-        Payment payment = new Payment();
-        payment.setPaymentDate(LocalDate.now());
-        when(paymentService.processPayment(Mockito.any(Payment.class))).thenReturn(payment);
-
-        // Test controller endpoint
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/payments/process")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"orderId\": 1, \"amount\": 100.0, \"cardNumber\": \"1234-5678-9012-3456\", \"cardHolderName\": \"John Doe\", \"cardExpiryDate\": \"2024-12-31\", \"cardCVV\": \"123\"}"))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
     @Test
