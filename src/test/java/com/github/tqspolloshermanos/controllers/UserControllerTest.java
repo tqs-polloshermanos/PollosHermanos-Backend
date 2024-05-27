@@ -1,6 +1,5 @@
 package com.github.tqspolloshermanos.controllers;
 
-import com.github.tqspolloshermanos.controllers.UserController;
 import com.github.tqspolloshermanos.entities.User;
 import com.github.tqspolloshermanos.services.UserService;
 import org.junit.jupiter.api.Test;
@@ -14,10 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class UserControllerTest {
+class UserControllerTest {
 
     @Test
-    public void testAuthenticatedUser() {
+    void testAuthenticatedUser() {
         // Mock UserService
         UserService userService = mock(UserService.class);
 

@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @ActiveProfiles("test")
 @Import(RoleSeeder.class)
-public class RoleRepositoryTest {
+class RoleRepositoryTest {
 
     @Autowired
     private RoleRepository roleRepository;
@@ -26,12 +26,12 @@ public class RoleRepositoryTest {
     private RoleSeeder roleSeeder;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         roleSeeder.onApplicationEvent(null);
     }
 
     @Test
-    public void testFindByName_UserRole() {
+    void testFindByName_UserRole() {
         // When
         Optional<Role> foundRole = roleRepository.findByName(RoleEnum.USER);
 
@@ -42,7 +42,7 @@ public class RoleRepositoryTest {
     }
 
     @Test
-    public void testFindByName_AdminRole() {
+    void testFindByName_AdminRole() {
         // When
         Optional<Role> foundRole = roleRepository.findByName(RoleEnum.ADMIN);
 
@@ -53,7 +53,7 @@ public class RoleRepositoryTest {
     }
 
     @Test
-    public void testFindByName_SuperAdminRole() {
+    void testFindByName_SuperAdminRole() {
         // When
         Optional<Role> foundRole = roleRepository.findByName(RoleEnum.SUPER_ADMIN);
 

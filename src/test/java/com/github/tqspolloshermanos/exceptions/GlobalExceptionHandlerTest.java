@@ -13,12 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class GlobalExceptionHandlerTest {
+class GlobalExceptionHandlerTest {
 
     private final GlobalExceptionHandler exceptionHandler = new GlobalExceptionHandler();
 
     @Test
-    public void testHandleBadCredentialsException() {
+    void testHandleBadCredentialsException() {
         BadCredentialsException exception = mock(BadCredentialsException.class);
         when(exception.getMessage()).thenReturn("Invalid username or password");
         ProblemDetail problemDetail = exceptionHandler.handleSecurityException(exception);
@@ -28,7 +28,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void testHandleLockedException() {
+    void testHandleLockedException() {
         LockedException exception = mock(LockedException.class);
         when(exception.getMessage()).thenReturn("Account is locked");
         ProblemDetail problemDetail = exceptionHandler.handleSecurityException(exception);
@@ -38,7 +38,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void testHandleUnknownErrorException() {
+    void testHandleUnknownErrorException() {
         Exception exception = mock(Exception.class);
         when(exception.getMessage()).thenReturn("Unknown error");
         ProblemDetail problemDetail = exceptionHandler.handleSecurityException(exception);
@@ -49,7 +49,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void testHandleAccessDeniedException() {
+    void testHandleAccessDeniedException() {
         AccessDeniedException exception = mock(AccessDeniedException.class);
         when(exception.getMessage()).thenReturn("Access denied");
         ProblemDetail problemDetail = exceptionHandler.handleSecurityException(exception);
@@ -59,7 +59,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void testHandleSignatureException() {
+    void testHandleSignatureException() {
         SignatureException exception = mock(SignatureException.class);
         when(exception.getMessage()).thenReturn("Invalid JWT signature");
         ProblemDetail problemDetail = exceptionHandler.handleSecurityException(exception);
@@ -69,7 +69,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void testHandleExpiredJwtException() {
+    void testHandleExpiredJwtException() {
         ExpiredJwtException exception = mock(ExpiredJwtException.class);
         when(exception.getMessage()).thenReturn("JWT token expired");
         ProblemDetail problemDetail = exceptionHandler.handleSecurityException(exception);

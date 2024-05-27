@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class AuthenticationServiceTest {
+class AuthenticationServiceTest {
 
     @Mock
     private UserRepository userRepository;
@@ -43,7 +43,7 @@ public class AuthenticationServiceTest {
     private AuthenticationService authenticationService;
 
     @Test
-    public void testAuthenticate_Success() {
+    void testAuthenticate_Success() {
         // Given
         LoginUserDto input = new LoginUserDto().setEmail("user@example.com").setPassword("password");
         User user = new User().setId(1).setEmail("user@example.com").setPassword("encodedPassword");
@@ -59,7 +59,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void testAuthenticate_UserNotFound() {
+    void testAuthenticate_UserNotFound() {
         // Given
         LoginUserDto input = new LoginUserDto().setEmail("nonexistent@example.com").setPassword("password");
         when(userRepository.findByEmail("nonexistent@example.com")).thenReturn(Optional.empty());

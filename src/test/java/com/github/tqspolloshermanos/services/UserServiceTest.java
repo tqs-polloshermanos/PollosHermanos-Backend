@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class UserServiceTest {
+class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
@@ -38,7 +38,7 @@ public class UserServiceTest {
 
 
     @Test
-    public void testAllUsers() {
+    void testAllUsers() {
         // Given
         List<User> userList = new ArrayList<>();
         userList.add(new User().setId(1).setFullName("User 1").setEmail("user1@example.com"));
@@ -59,7 +59,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testCreateAdministrator_Success() {
+    void testCreateAdministrator_Success() {
         // Given
         RegisterUserDto input = new RegisterUserDto();
         input.setEmail("admin@example.com");
@@ -82,16 +82,16 @@ public class UserServiceTest {
         assertThat(createdUser.getFullName()).isEqualTo(input.getFullName());
         assertThat(createdUser.getRole()).isEqualTo(adminRole);
         assertThat(createdUser.getUsername()).isEqualTo("admin@example.com");
-        assertThat(createdUser.isAccountNonExpired()).isEqualTo(true);
-        assertThat(createdUser.isAccountNonLocked()).isEqualTo(true);
-        assertThat(createdUser.isCredentialsNonExpired()).isEqualTo(true);
-        assertThat(createdUser.isEnabled()).isEqualTo(true);
+        assertThat(createdUser.isAccountNonExpired()).isTrue();
+        assertThat(createdUser.isAccountNonLocked()).isTrue();
+        assertThat(createdUser.isCredentialsNonExpired()).isTrue();
+        assertThat(createdUser.isEnabled()).isTrue();
         verify(roleRepository, times(1)).findByName(RoleEnum.ADMIN);
         verify(userRepository, times(1)).save(any(User.class));
     }
 
     @Test
-    public void testCreateAdministrator_RoleNotFound() {
+    void testCreateAdministrator_RoleNotFound() {
         // Given
         RegisterUserDto input = new RegisterUserDto();
         input.setEmail("admin@example.com");

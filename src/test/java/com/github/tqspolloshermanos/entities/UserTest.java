@@ -1,8 +1,5 @@
 package com.github.tqspolloshermanos.entities;
 
-import com.github.tqspolloshermanos.entities.Role;
-import com.github.tqspolloshermanos.entities.RoleEnum;
-import com.github.tqspolloshermanos.entities.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -10,10 +7,10 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class UserTest {
+class UserTest {
 
     @Test
-    public void testUserEntityMethods() {
+    void testUserEntityMethods() {
         // Create a Role object
         Role role = new Role();
         role.setId(1);

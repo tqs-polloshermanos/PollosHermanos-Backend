@@ -1,6 +1,5 @@
 package com.github.tqspolloshermanos.controllers;
 
-import com.github.tqspolloshermanos.controllers.AdminController;
 import com.github.tqspolloshermanos.dtos.RegisterUserDto;
 import com.github.tqspolloshermanos.services.UserService;
 import org.junit.jupiter.api.Test;
@@ -12,10 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class AdminControllerTest {
+class AdminControllerTest {
 
     @Test
-    public void testCreateAdministratorWhenUserAlreadyExists() {
+    void testCreateAdministratorWhenUserAlreadyExists() {
         // Mock UserService
         UserService userService = Mockito.mock(UserService.class);
         // Mock UserService to return null

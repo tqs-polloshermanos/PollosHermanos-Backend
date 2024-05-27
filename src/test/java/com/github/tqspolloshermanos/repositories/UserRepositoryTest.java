@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @ActiveProfiles("test")
 @Import(RoleSeeder.class)
-public class UserRepositoryTest {
+class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
@@ -30,7 +30,7 @@ public class UserRepositoryTest {
     private RoleSeeder roleSeeder;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         roleSeeder.onApplicationEvent(null);
         // Ensure roles are seeded
         Role userRole = roleRepository.findByName(RoleEnum.USER).orElseThrow();
@@ -46,7 +46,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void testFindByEmail_UserExists() {
+    void testFindByEmail_UserExists() {
         // When
         Optional<User> foundUser = userRepository.findByEmail("john@example.com");
 
@@ -57,7 +57,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void testFindByEmail_UserDoesNotExist() {
+    void testFindByEmail_UserDoesNotExist() {
         // When
         Optional<User> foundUser = userRepository.findByEmail("nonexistent@example.com");
 
@@ -66,7 +66,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void testSaveUser() {
+    void testSaveUser() {
         // Given
         Role userRole = roleRepository.findByName(RoleEnum.USER).orElseThrow();
         User user = new User().setFullName("New User").setEmail("newuser@example.com").setPassword("newpassword").setRole(userRole);
@@ -81,7 +81,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void testDeleteUser() {
+    void testDeleteUser() {
         // Given
         Optional<User> foundUser = userRepository.findByEmail("jane@example.com");
         assertThat(foundUser).isPresent();

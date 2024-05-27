@@ -1,6 +1,5 @@
 package com.github.tqspolloshermanos.controllers;
 
-import com.github.tqspolloshermanos.controllers.AuthenticationController;
 import com.github.tqspolloshermanos.dtos.LoginUserDto;
 import com.github.tqspolloshermanos.dtos.RegisterUserDto;
 import com.github.tqspolloshermanos.entities.User;
