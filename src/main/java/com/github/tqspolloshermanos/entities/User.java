@@ -69,16 +69,19 @@ public class User implements UserDetails {
         return email;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
@@ -130,6 +133,7 @@ public class User implements UserDetails {
         return this;
     }
 
+    @JsonIgnore
     public Date getUpdatedAt() {
         return updatedAt;
     }

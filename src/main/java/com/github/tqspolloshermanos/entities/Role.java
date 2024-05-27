@@ -1,5 +1,6 @@
 package com.github.tqspolloshermanos.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -55,6 +56,7 @@ public class Role {
         return this;
     }
 
+    @JsonIgnore
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -64,6 +66,7 @@ public class Role {
         return this;
     }
 
+    @JsonIgnore
     public Date getUpdatedAt() {
         return updatedAt;
     }
