@@ -17,7 +17,7 @@ import java.util.List;
 @Entity
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(nullable = false)
     private Integer id;
 
@@ -45,7 +45,7 @@ public class User implements UserDetails {
         return List.of(authority);
     }
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
