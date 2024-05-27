@@ -65,7 +65,7 @@ public class UserServiceTest {
         input.setEmail("admin@example.com");
         input.setPassword("password");
         input.setFullName("Admin");
-
+        
         Role adminRole = new Role().setName(RoleEnum.ADMIN);
         when(roleRepository.findByName(RoleEnum.ADMIN)).thenReturn(Optional.of(adminRole));
         when(userRepository.save(any(User.class))).thenReturn(new User().setFullName(input.getFullName())
@@ -81,6 +81,11 @@ public class UserServiceTest {
         assertThat(createdUser.getEmail()).isEqualTo(input.getEmail());
         assertThat(createdUser.getFullName()).isEqualTo(input.getFullName());
         assertThat(createdUser.getRole()).isEqualTo(adminRole);
+        assertThat(createdUser.getUsername()).isEqualTo("admin@example.com");
+        assertThat(createdUser.isAccountNonExpired()).isEqualTo(true);
+        assertThat(createdUser.isAccountNonLocked()).isEqualTo(true);
+        assertThat(createdUser.isCredentialsNonExpired()).isEqualTo(true);
+        assertThat(createdUser.isEnabled()).isEqualTo(true);
         verify(roleRepository, times(1)).findByName(RoleEnum.ADMIN);
         verify(userRepository, times(1)).save(any(User.class));
     }
