@@ -1,7 +1,11 @@
 package com.github.tqspolloshermanos.responses;
 
+import com.github.tqspolloshermanos.entities.User;
+
 public class LoginResponse {
     private String token;
+
+    private User user;
 
     private long expiresIn;
 
@@ -29,5 +33,14 @@ public class LoginResponse {
                 "token='" + token + '\'' +
                 ", expiresIn=" + expiresIn +
                 '}';
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public LoginResponse setUser(User user) {
+        this.user = user;
+        return this;
     }
 }
