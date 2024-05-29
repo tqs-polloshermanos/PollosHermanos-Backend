@@ -20,7 +20,6 @@ class RestaurantTest {
         restaurant.setCuisineType(ECuisineType.ITALIAN);
         restaurant.setDescription("A lovely Italian restaurant");
         byte[] image = Base64.getDecoder().decode("aGVsbG93b3JsZA==");  // Example base64 encoded image
-        restaurant.setImage(image);
         restaurant.setNumberOfOrders(100);
 
         // Test getters
@@ -29,7 +28,6 @@ class RestaurantTest {
         assertEquals("123 Test Street", restaurant.getAddress());
         assertEquals(ECuisineType.ITALIAN, restaurant.getCuisineType());
         assertEquals("A lovely Italian restaurant", restaurant.getDescription());
-        assertEquals(image, restaurant.getImage());
         assertEquals(100, restaurant.getNumberOfOrders());
     }
 }

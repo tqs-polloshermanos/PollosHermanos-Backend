@@ -25,11 +25,6 @@ public class Restaurant {
     @Column(name = "description")
     private String description;
 
-    @Lob
-    @JsonIgnore
-    @Column(name = "image")
-    private byte[] image;
-
     @Column(name = "number_of_orders")
     private int numberOfOrders;
 
@@ -37,12 +32,11 @@ public class Restaurant {
     public Restaurant() {
     }
 
-    public Restaurant(String name, String address, ECuisineType cuisineType, String description, byte[] image, int numberOfOrders) {
+    public Restaurant(String name, String address, ECuisineType cuisineType, String description, int numberOfOrders) {
         this.name = name;
         this.address = address;
         this.cuisineType = cuisineType;
         this.description = description;
-        this.image = image;
         this.numberOfOrders = numberOfOrders;
     }
 
@@ -93,14 +87,6 @@ public class Restaurant {
 
     public void setNumberOfOrders(int numberOfOrders) {
         this.numberOfOrders = numberOfOrders;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 }
 

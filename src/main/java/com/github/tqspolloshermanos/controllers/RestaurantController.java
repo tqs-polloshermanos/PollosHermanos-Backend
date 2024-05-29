@@ -34,20 +34,4 @@ public class RestaurantController {
         return restaurant.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-    @GetMapping("/image/{id}")
-    public ResponseEntity<String> getRestaurantImageById(@PathVariable Long id) {
-        Optional<Restaurant> restaurant = restaurantService.findRestaurantById(id);
-        if (!restaurant.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Restaurant not found");
-        }
-
-        byte[] image = restaurant.get().getImage();
-        if (image == null) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No image found for the restaurant");
-        }
-
-        String base64Image = Base64.getEncoder().encodeToString(image);
-        return ResponseEntity.ok(base64Image);
-    }
 }

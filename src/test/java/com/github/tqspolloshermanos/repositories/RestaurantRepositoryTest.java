@@ -22,9 +22,9 @@ public class RestaurantRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        Restaurant restaurant1 = new Restaurant("Restaurant A", "Address A", ECuisineType.ITALIAN, "Description A", null, 10);
-        Restaurant restaurant2 = new Restaurant("Restaurant B", "Address B", ECuisineType.CHINESE, "Description B", null, 20);
-        Restaurant restaurant3 = new Restaurant("Restaurant C", "Address C", ECuisineType.ITALIAN, "Description C", null, 30);
+        Restaurant restaurant1 = new Restaurant("Restaurant A", "Address A", ECuisineType.ITALIAN, "Description A", 10);
+        Restaurant restaurant2 = new Restaurant("Restaurant B", "Address B", ECuisineType.CHINESE, "Description B", 20);
+        Restaurant restaurant3 = new Restaurant("Restaurant C", "Address C", ECuisineType.ITALIAN, "Description C", 30);
 
         restaurantRepository.save(restaurant1);
         restaurantRepository.save(restaurant2);
