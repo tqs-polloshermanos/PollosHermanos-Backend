@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     List<Restaurant> findByCuisineType(ECuisineType cuisineType);
+
+    Optional<Restaurant> findByName(String name);
 }
