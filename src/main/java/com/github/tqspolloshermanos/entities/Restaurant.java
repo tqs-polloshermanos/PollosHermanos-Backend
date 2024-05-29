@@ -1,5 +1,6 @@
 package com.github.tqspolloshermanos.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -25,6 +26,7 @@ public class Restaurant {
     private String description;
 
     @Lob
+    @JsonIgnore
     @Column(name = "image")
     private byte[] image;
 
