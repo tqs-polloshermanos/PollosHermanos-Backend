@@ -1,6 +1,5 @@
 package com.github.tqspolloshermanos.services;
 
-import com.github.tqspolloshermanos.entities.ECuisineType;
 import com.github.tqspolloshermanos.entities.Product;
 import com.github.tqspolloshermanos.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
