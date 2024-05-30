@@ -58,9 +58,9 @@ public class RestaurantSeeder implements ApplicationListener<ContextRefreshedEve
         products.forEach(product -> {
             Optional<Product> optionalProduct = productRepository.findByName(product.getName());
 
-            optionalProduct.ifPresentOrElse(System.out::println, () -> {
-                productRepository.save(product);
-            });
+            optionalProduct.ifPresentOrElse(System.out::println, () ->
+                productRepository.save(product)
+            );
         });
     }
 }

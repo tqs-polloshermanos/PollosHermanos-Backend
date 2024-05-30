@@ -6,10 +6,8 @@ import com.github.tqspolloshermanos.entities.ECuisineType;
 import com.github.tqspolloshermanos.repositories.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -21,7 +19,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class ProductServiceTest {
+class ProductServiceTest {
 
     @Mock
     private ProductRepository productRepository;
@@ -33,7 +31,7 @@ public class ProductServiceTest {
     private Restaurant restaurant;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         restaurant = new Restaurant();
         restaurant.setId(1L);
         restaurant.setName("Test Restaurant");
@@ -51,7 +49,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testFindById() {
+    void testFindById() {
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
 
         Optional<Product> foundProduct = productService.findById(1L);
@@ -62,7 +60,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testFindAll() {
+    void testFindAll() {
         List<Product> products = List.of(product);
         when(productRepository.findAll()).thenReturn(products);
 
@@ -74,7 +72,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testFindProductsByRestaurantId() {
+    void testFindProductsByRestaurantId() {
         List<Product> products = List.of(product);
         when(productRepository.findByRestaurantId(1L)).thenReturn(products);
 

@@ -37,8 +37,7 @@ public class ProductController {
     @GetMapping
     public List<ProductDto> getAllProducts() {
         List<Product> products = productService.findAll();
-        List<ProductDto> productDtos = products.stream().map(this::convertToDto).collect(Collectors.toList());
-        return productDtos;
+        return products.stream().map(this::convertToDto).toList();
     }
 
     @GetMapping("/{id}")
@@ -57,7 +56,7 @@ public class ProductController {
         if (products.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        List<ProductDto> productDtos = products.stream().map(this::convertToDto).collect(Collectors.toList());
+        List<ProductDto> productDtos = products.stream().map(this::convertToDto).toList();
         return ResponseEntity.ok(productDtos);
     }
 }

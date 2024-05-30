@@ -7,13 +7,14 @@ import com.github.tqspolloshermanos.entities.ECuisineType;
 import com.github.tqspolloshermanos.services.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class ProductControllerTest {
@@ -22,14 +23,13 @@ class ProductControllerTest {
     private ProductController productController;
 
     private Product product;
-    private Restaurant restaurant;
 
     @BeforeEach
     void setUp() {
         productService = mock(ProductService.class);
         productController = new ProductController(productService);
 
-        restaurant = new Restaurant();
+        Restaurant restaurant = new Restaurant();
         restaurant.setId(1L);
         restaurant.setName("Test Restaurant");
         restaurant.setAddress("123 Test St");
@@ -62,7 +62,7 @@ class ProductControllerTest {
 
         ResponseEntity<ProductDto> responseEntity = productController.getProductById(1L);
 
-        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("Pizza Royal", responseEntity.getBody().getName());
         verify(productService, times(1)).findById(1L);
     }
@@ -73,8 +73,8 @@ class ProductControllerTest {
 
         ResponseEntity<ProductDto> responseEntity = productController.getProductById(1L);
 
-        assertEquals(404, responseEntity.getStatusCodeValue());
-        assertTrue(responseEntity.getBody() == null);
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
         verify(productService, times(1)).findById(1L);
     }
 
@@ -84,7 +84,7 @@ class ProductControllerTest {
 
         ResponseEntity<List<ProductDto>> responseEntity = productController.getProductsByRestaurantId(1L);
 
-        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(1, responseEntity.getBody().size());
         assertEquals("Pizza Royal", responseEntity.getBody().get(0).getName());
         verify(productService, times(1)).findProductsByRestaurantId(1L);
@@ -96,8 +96,8 @@ class ProductControllerTest {
 
         ResponseEntity<List<ProductDto>> responseEntity = productController.getProductsByRestaurantId(1L);
 
-        assertEquals(404, responseEntity.getStatusCodeValue());
-        assertTrue(responseEntity.getBody() == null);
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
         verify(productService, times(1)).findProductsByRestaurantId(1L);
     }
 }

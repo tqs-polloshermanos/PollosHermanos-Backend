@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
-public class ProductRepositoryTest {
+class ProductRepositoryTest {
 
     @Autowired
     private ProductRepository productRepository;
@@ -27,7 +27,7 @@ public class ProductRepositoryTest {
     private Restaurant restaurant;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         restaurant = new Restaurant();
         restaurant.setName("Test Restaurant");
         restaurant.setAddress("123 Test St");
@@ -45,20 +45,20 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void testFindByRestaurantId() {
+    void testFindByRestaurantId() {
         List<Product> products = productRepository.findByRestaurantId(restaurant.getId());
         assertEquals(2, products.size());
     }
 
     @Test
-    public void testFindByName() {
+    void testFindByName() {
         Optional<Product> product = productRepository.findByName("Pizza Royal");
         assertTrue(product.isPresent());
         assertEquals("Pizza Royal", product.get().getName());
     }
 
     @Test
-    public void testFindByNameNotFound() {
+    void testFindByNameNotFound() {
         Optional<Product> product = productRepository.findByName("Non-Existent Product");
         assertFalse(product.isPresent());
     }
