@@ -24,19 +24,15 @@ public class Product {
     @Column(nullable = false, name = "price")
     private Integer price;
 
-    @Column(name = "image_path")
-    private String imagePath;
-
     // Constructors
     public Product() {
     }
 
-    public Product(String name, Restaurant restaurant, String description, Integer price, String imagePath) {
+    public Product(String name, Restaurant restaurant, String description, Integer price) {
         this.name = name;
         this.restaurant = restaurant;
         this.description = description;
         this.price = price;
-        this.imagePath = imagePath;
     }
 
     // Getters and Setters
@@ -78,13 +74,5 @@ public class Product {
 
     public void setPrice(Integer price) {
         this.price = price;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
     }
 }

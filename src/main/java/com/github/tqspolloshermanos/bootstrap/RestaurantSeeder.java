@@ -50,9 +50,9 @@ public class RestaurantSeeder implements ApplicationListener<ContextRefreshedEve
         }
 
         List<Product> products = List.of(
-                new Product("Pizza Royal", persistedRestaurants.get(0), "45 cm radius traditional italian pizza with cheese, pepperoni, olives and rucola", 1000, ""),
-                new Product("10 Mako Rolls", persistedRestaurants.get(1), "Ten mako sushi rolls with salmon, surimi and cucumber", 750, ""),
-                new Product("Taco", persistedRestaurants.get(2), "Traditional mexican taco filled with cheese, ground pork, lettuce and tomatoes", 700, "")
+                new Product("Pizza Royal", persistedRestaurants.get(0), "45 cm radius traditional italian pizza with cheese, pepperoni, olives and rucola", 1000),
+                new Product("10 Mako Rolls", persistedRestaurants.get(1), "Ten mako sushi rolls with salmon, surimi and cucumber", 750),
+                new Product("Taco", persistedRestaurants.get(2), "Traditional mexican taco filled with cheese, ground pork, lettuce and tomatoes", 700)
         );
 
         products.forEach(product -> {

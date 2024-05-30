@@ -2,12 +2,14 @@ package com.github.tqspolloshermanos.controllers;
 
 import com.github.tqspolloshermanos.entities.Product;
 import com.github.tqspolloshermanos.services.ProductService;
+import com.github.tqspolloshermanos.dtos.ProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/products")
@@ -20,24 +22,42 @@ public class ProductController {
         this.productService = productService;
     }
 
+    private ProductDto convertToDto(Product product) {
+        ProductDto dto = new ProductDto();
+        dto.setId(product.getId());
+        dto.setName(product.getName());
+        dto.setRestaurantId(product.getRestaurant().getId());
+        dto.setRestaurantName(product.getRestaurant().getName());
+        dto.setCuisineType(product.getRestaurant().getCuisineType());
+        dto.setDescription(product.getDescription());
+        dto.setPrice(product.getPrice());
+        return dto;
+    }
+
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.findAll();
+    public List<ProductDto> getAllProducts() {
+        List<Product> products = productService.findAll();
+        List<ProductDto> productDtos = products.stream().map(this::convertToDto).collect(Collectors.toList());
+        return productDtos;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
         Optional<Product> product = productService.findById(id);
-        return product.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        if (product.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        ProductDto productDto = convertToDto(product.get());
+        return ResponseEntity.ok(productDto);
     }
 
     @GetMapping("/restaurant/{restaurantId}")
-    public ResponseEntity<List<Product>> getProductsByRestaurantId(@PathVariable Long restaurantId) {
+    public ResponseEntity<List<ProductDto>> getProductsByRestaurantId(@PathVariable Long restaurantId) {
         List<Product> products = productService.findProductsByRestaurantId(restaurantId);
         if (products.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(products);
+        List<ProductDto> productDtos = products.stream().map(this::convertToDto).collect(Collectors.toList());
+        return ResponseEntity.ok(productDtos);
     }
 }
