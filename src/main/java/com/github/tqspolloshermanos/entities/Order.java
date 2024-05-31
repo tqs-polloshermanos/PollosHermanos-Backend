@@ -2,6 +2,7 @@ package com.github.tqspolloshermanos.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,7 +30,7 @@ public class Order {
     private EOrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> OrderItems;
+    private List<OrderItem> OrderItems = new ArrayList<>();
 
     public Order() {
     }

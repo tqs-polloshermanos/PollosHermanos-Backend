@@ -3,6 +3,7 @@ package com.github.tqspolloshermanos.services;
 import com.github.tqspolloshermanos.entities.Order;
 import com.github.tqspolloshermanos.entities.OrderItem;
 import com.github.tqspolloshermanos.entities.User;
+import com.github.tqspolloshermanos.repositories.OrderItemRepository;
 import com.github.tqspolloshermanos.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +14,12 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository) {
         this.orderRepository = orderRepository;
+        this.orderItemRepository = orderItemRepository;
     }
 
     public Integer getTotalPrice(Order order) {
@@ -34,7 +37,11 @@ public class OrderService {
         return orders;
     }
 
-    public Order placeOrder(Order order) {
+    public OrderItem saveItem(OrderItem item) {
+        return orderItemRepository.save(item);
+    }
+
+    public Order saveOrder(Order order) {
         return orderRepository.save(order);
     }
 
