@@ -22,7 +22,7 @@ public class OrderDto {
 
     public OrderDto(Order order) {
         id = order.getId();
-        userId = Long.valueOf(order.getUser().getId());
+        userId = order.getUser().getId();
         orderDate = order.getOrderDate();
         status = order.getStatus();
 

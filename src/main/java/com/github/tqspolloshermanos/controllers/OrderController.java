@@ -84,7 +84,7 @@ public class OrderController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
             }
 
-            if (productOpt.get().getRestaurant().getId() != restaurantId) {
+            if (!Objects.equals(productOpt.get().getRestaurant().getId(), restaurantId)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Products have to be from the same restaurant");
             }
 

@@ -20,9 +20,8 @@ public class OrderService {
     }
 
     public List<Order> getUserOrders(User user) {
-        Long userId = Long.valueOf(user.getId());
-        List<Order> orders = orderRepository.findByUserId(userId);
-        return orders;
+        Long userId = user.getId();
+        return orderRepository.findByUserId(userId);
     }
 
     public boolean userHasPendingOrders(User user) {
