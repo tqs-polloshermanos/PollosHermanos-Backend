@@ -14,5 +14,83 @@ public class OrderDto {
     private ECuisineType cuisineType;
     private LocalDateTime orderDate;
     private EOrderStatus status;
-    private List<OrderItemDto> orderItems = new ArrayList<>();
+    private final List<OrderItemDto> orderItems = new ArrayList<>();
+
+    public OrderDto() {
+
+    }
+
+    public OrderDto(Order order) {
+        id = order.getId();
+        userId = Long.valueOf(order.getUser().getId());
+        orderDate = order.getOrderDate();
+        status = order.getStatus();
+
+        Restaurant restaurant = order.getRestaurant();
+        restaurantId = restaurant.getId();
+        restaurantName = restaurant.getName();
+        cuisineType = restaurant.getCuisineType();
+
+        order.getOrderItems().forEach((item) -> orderItems.add(new OrderItemDto(item)));
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(Long restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public ECuisineType getCuisineType() {
+        return cuisineType;
+    }
+
+    public void setCuisineType(ECuisineType cuisineType) {
+        this.cuisineType = cuisineType;
+    }
+
+    public LocalDateTime getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public EOrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EOrderStatus status) {
+        this.status = status;
+    }
+
+    public List<OrderItemDto> getOrderItems() {
+        return orderItems;
+    }
 }

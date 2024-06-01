@@ -1,6 +1,7 @@
 package com.github.tqspolloshermanos.controllers;
 
 import com.github.tqspolloshermanos.dtos.OrderItemDto;
+import com.github.tqspolloshermanos.dtos.OrderDto;
 import com.github.tqspolloshermanos.dtos.PlaceOrderDto;
 import com.github.tqspolloshermanos.entities.*;
 import com.github.tqspolloshermanos.services.OrderService;
@@ -32,18 +33,19 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Order>> getUserOrderHistory(@AuthenticationPrincipal User user) {
+    public ResponseEntity<List<OrderDto>> getUserOrderHistory(@AuthenticationPrincipal User user) {
 
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
 
-        List<Order> orders = orderService.getUserOrders(user);
-        return ResponseEntity.ok(orders);
+        List<OrderDto> orderDtos = new ArrayList<>();
+        orderService.getUserOrders(user).forEach((order -> orderDtos.add(new OrderDto(order))));
+        return ResponseEntity.ok(orderDtos);
     }
 
     @PostMapping
-    public ResponseEntity<Order> placeOrder(@AuthenticationPrincipal User user, @RequestBody PlaceOrderDto placeOrderDto) {
+    public ResponseEntity<OrderDto> placeOrder(@AuthenticationPrincipal User user, @RequestBody PlaceOrderDto placeOrderDto) {
 
         List<OrderItemDto> items = placeOrderDto.getItems();
         Long restaurantId = placeOrderDto.getRestaurantId();
@@ -91,6 +93,6 @@ public class OrderController {
         }
 
         order = orderService.saveOrder(order);
-        return ResponseEntity.ok(order);
+        return ResponseEntity.ok(new OrderDto(order));
     }
 }
