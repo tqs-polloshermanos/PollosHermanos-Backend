@@ -1,6 +1,7 @@
 package com.github.tqspolloshermanos.dtos;
 
 import com.github.tqspolloshermanos.entities.ECuisineType;
+import com.github.tqspolloshermanos.entities.Product;
 
 public class ProductDto {
     private Long id;
@@ -14,6 +15,16 @@ public class ProductDto {
     private String description;
 
     private Integer price;
+
+    public ProductDto(Product product) {
+        id = product.getId();
+        name = product.getName();
+        restaurantId = product.getRestaurant().getId();
+        restaurantName = product.getRestaurant().getName();
+        cuisineType = product.getRestaurant().getCuisineType();
+        description = product.getDescription();
+        price = product.getPrice();
+    }
 
     public Long getId() {
         return id;

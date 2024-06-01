@@ -1,5 +1,7 @@
 package com.github.tqspolloshermanos.dtos;
 
+import com.github.tqspolloshermanos.entities.OrderItem;
+
 public class OrderItemDto {
     Long productId;
     Integer quantity;

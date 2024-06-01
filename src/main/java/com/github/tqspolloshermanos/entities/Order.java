@@ -1,5 +1,7 @@
 package com.github.tqspolloshermanos.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
@@ -30,17 +33,18 @@ public class Order {
     private EOrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> OrderItems = new ArrayList<>();
+    @JsonManagedReference
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     public Order() {
     }
 
-    public Order(User user, Restaurant restaurant, LocalDateTime orderDate, EOrderStatus status, List<OrderItem> OrderItems) {
+    public Order(User user, Restaurant restaurant, LocalDateTime orderDate, EOrderStatus status, List<OrderItem> orderItems) {
         this.user = user;
         this.restaurant = restaurant;
         this.orderDate = orderDate;
         this.status = status;
-        this.OrderItems = OrderItems;
+        this.orderItems = orderItems;
     }
 
     public Long getId() {
@@ -84,10 +88,10 @@ public class Order {
     }
 
     public List<OrderItem> getOrderItems() {
-        return OrderItems;
+        return orderItems;
     }
 
     public void setOrderItems(List<OrderItem> OrderItems) {
-        this.OrderItems = OrderItems;
+        this.orderItems = OrderItems;
     }
 }
