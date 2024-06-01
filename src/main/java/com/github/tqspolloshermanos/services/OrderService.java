@@ -1,9 +1,8 @@
 package com.github.tqspolloshermanos.services;
 
+import com.github.tqspolloshermanos.entities.EOrderStatus;
 import com.github.tqspolloshermanos.entities.Order;
-import com.github.tqspolloshermanos.entities.OrderItem;
 import com.github.tqspolloshermanos.entities.User;
-import com.github.tqspolloshermanos.repositories.OrderItemRepository;
 import com.github.tqspolloshermanos.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,21 +13,10 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository) {
+    public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
-        this.orderItemRepository = orderItemRepository;
-    }
-
-    public Integer getTotalPrice(Order order) {
-        Integer total = 0;
-        List<OrderItem> items = order.getOrderItems();
-        for (OrderItem item : items) {
-            total += item.getQuantity() * item.getProduct().getPrice();
-        }
-        return total;
     }
 
     public List<Order> getUserOrders(User user) {
@@ -37,15 +25,12 @@ public class OrderService {
         return orders;
     }
 
-    public OrderItem saveItem(OrderItem item) {
-        return orderItemRepository.save(item);
+    public boolean userHasPendingOrders(User user) {
+        return orderRepository.existsByUserAndStatus(user, EOrderStatus.PENDING);
     }
 
     public Order saveOrder(Order order) {
         return orderRepository.save(order);
     }
 
-    public Order findOrderById(Long orderId) {
-        return orderRepository.findById(orderId).orElse(null);
-    }
 }

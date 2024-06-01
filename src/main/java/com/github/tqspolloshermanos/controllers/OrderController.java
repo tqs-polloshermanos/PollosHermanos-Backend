@@ -36,7 +36,7 @@ public class OrderController {
     public ResponseEntity<List<OrderDto>> getUserOrderHistory(@AuthenticationPrincipal User user) {
 
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyList());
         }
 
         List<OrderDto> orderDtos = new ArrayList<>();
@@ -45,22 +45,26 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> placeOrder(@AuthenticationPrincipal User user, @RequestBody PlaceOrderDto placeOrderDto) {
+    public ResponseEntity<?> placeOrder(@AuthenticationPrincipal User user, @RequestBody PlaceOrderDto placeOrderDto) {
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+        }
+
+        if (orderService.userHasPendingOrders(user)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User has did not pay for past orders");
+        }
 
         List<OrderItemDto> items = placeOrderDto.getItems();
         Long restaurantId = placeOrderDto.getRestaurantId();
 
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-
         if (items.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Order has to have at least one item");
         }
 
         Optional<Restaurant> restaurantOpt = restaurantService.findRestaurantById(restaurantId);
         if (restaurantOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Restaurant is not found");
         }
 
         Order order = new Order();
@@ -69,20 +73,19 @@ public class OrderController {
         order.setOrderDate(LocalDateTime.now());
         order.setStatus(EOrderStatus.PENDING);
 
-        List<OrderItem> orderItems = new ArrayList<>();
         for (OrderItemDto dto : items) {
 
             if (dto.getQuantity() == 0) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Item quantity cannot be 0");
             }
 
             Optional<Product> productOpt = productService.findById(dto.getProductId());
             if (productOpt.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
             }
 
             if (productOpt.get().getRestaurant().getId() != restaurantId) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Products have to be from the same restaurant");
             }
 
             OrderItem item = new OrderItem();
