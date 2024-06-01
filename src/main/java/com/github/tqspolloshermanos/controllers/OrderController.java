@@ -51,9 +51,9 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }
 
-        if (orderService.userHasPendingOrders(user)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User has did not pay for past orders");
-        }
+//        if (orderService.userHasPendingOrders(user)) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User has did not pay for past orders");
+//        }
 
         List<OrderItemDto> items = placeOrderDto.getItems();
         Long restaurantId = placeOrderDto.getRestaurantId();
