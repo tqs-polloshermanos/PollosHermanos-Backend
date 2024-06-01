@@ -32,7 +32,7 @@ public class Order {
     @Column(nullable = false, name = "status")
     private EOrderStatus status;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<OrderItem> orderItems = new ArrayList<>();
 
