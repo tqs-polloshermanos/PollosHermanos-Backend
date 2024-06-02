@@ -3,10 +3,12 @@ package com.github.tqspolloshermanos.controllers;
 import com.github.tqspolloshermanos.dtos.OrderDto;
 import com.github.tqspolloshermanos.dtos.PlaceOrderDto;
 import com.github.tqspolloshermanos.dtos.OrderItemDto;
+import com.github.tqspolloshermanos.dtos.StatusChangeDto;
 import com.github.tqspolloshermanos.entities.*;
 import com.github.tqspolloshermanos.services.OrderService;
 import com.github.tqspolloshermanos.services.ProductService;
 import com.github.tqspolloshermanos.services.RestaurantService;
+import com.github.tqspolloshermanos.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,6 +45,9 @@ public class OrderControllerTest {
 
     @MockBean
     private RestaurantService restaurantService;
+
+    @MockBean
+    private UserService userService;
 
     @Autowired
     @InjectMocks
@@ -212,5 +217,116 @@ public class OrderControllerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Item quantity cannot be 0", response.getBody());
+    }
+
+    @Test
+    void testGetOrderById_Unauthorized() {
+        ResponseEntity<OrderDto> response = orderController.getOrderById(null, 1L);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
+    @WithMockUser
+    void testGetOrderById_OrderNotFound() {
+        when(orderService.getOrderById(1L)).thenReturn(Optional.empty());
+
+        ResponseEntity<OrderDto> response = orderController.getOrderById(user, 1L);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    @WithMockUser
+    void testGetOrderById_NotUserOrder() {
+        User otherUser = new User();
+        otherUser.setId(2L);
+        Order order = new Order();
+        order.setUser(otherUser);
+        when(orderService.getOrderById(1L)).thenReturn(Optional.of(order));
+        when(userService.isUserEmployee(user)).thenReturn(false);
+
+        ResponseEntity<OrderDto> response = orderController.getOrderById(user, 1L);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    @WithMockUser
+    void testGetOrderById_Success() {
+        Order order = new Order();
+        order.setUser(user);
+        order.setRestaurant(new Restaurant());
+        when(orderService.getOrderById(1L)).thenReturn(Optional.of(order));
+        when(userService.isUserEmployee(user)).thenReturn(false);
+
+        ResponseEntity<OrderDto> response = orderController.getOrderById(user, 1L);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    void testGetOrdersByRestaurantAndStatus_RestaurantNotFound() {
+        when(restaurantService.findRestaurantById(1L)).thenReturn(Optional.empty());
+
+        ResponseEntity<?> response = orderController.getOrdersByRestaurantAndStatus(1L, List.of(EOrderStatus.PENDING));
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    void testGetOrdersByRestaurantAndStatus_Success() {
+        Restaurant restaurant = new Restaurant();
+        when(restaurantService.findRestaurantById(1L)).thenReturn(Optional.of(restaurant));
+        when(orderService.getRestaurantOrders(eq(1L), anySet())).thenReturn(List.of());
+
+        ResponseEntity<?> response = orderController.getOrdersByRestaurantAndStatus(1L, List.of(EOrderStatus.PENDING));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    void testUpdateOrderStatus_StatusMissing() {
+        StatusChangeDto dto = new StatusChangeDto();
+        dto.setStatus(null);
+
+        ResponseEntity<?> response = orderController.updateOrderStatus(1L, dto);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Status is required", response.getBody());
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    void testUpdateOrderStatus_InvalidStatus() {
+        StatusChangeDto dto = new StatusChangeDto();
+        dto.setStatus("INVALID_STATUS");
+
+        ResponseEntity<?> response = orderController.updateOrderStatus(1L, dto);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Invalid status value", response.getBody());
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    void testUpdateOrderStatus_OrderNotFound() {
+        StatusChangeDto dto = new StatusChangeDto();
+        dto.setStatus(EOrderStatus.PROCESSING.name());
+        when(orderService.getOrderById(1L)).thenReturn(Optional.empty());
+
+        ResponseEntity<?> response = orderController.updateOrderStatus(1L, dto);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Order not found", response.getBody());
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    void testUpdateOrderStatus_Success() {
+        StatusChangeDto dto = new StatusChangeDto();
+        dto.setStatus(EOrderStatus.PROCESSING.name());
+        Order order = new Order();
+        when(orderService.getOrderById(1L)).thenReturn(Optional.of(order));
+
+        ResponseEntity<?> response = orderController.updateOrderStatus(1L, dto);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Order status updated successfully", response.getBody());
+
+        verify(orderService, times(1)).updateOrderStatus(order, EOrderStatus.PROCESSING);
     }
 }
