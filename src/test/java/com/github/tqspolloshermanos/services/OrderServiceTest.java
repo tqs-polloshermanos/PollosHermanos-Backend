@@ -15,8 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -114,5 +113,30 @@ class OrderServiceTest {
 
         assertEquals(newStatus, order.getStatus());
         verify(orderRepository, times(1)).save(order);
+    }
+
+    @Test
+    void testIsOrderPaidFor() {
+        Order order = new Order();
+        order.setStatus(EOrderStatus.PENDING);
+
+        boolean result = orderService.isOrderPaidFor(order);
+
+        assertFalse(result, "Order with PENDING status should not be considered paid for.");
+    }
+
+    @Test
+    void testIsUserOwner() {
+        User user = new User();
+        user.setId(1L);
+
+        Order order = new Order();
+        User orderUser = new User();
+        orderUser.setId(1L);
+        order.setUser(orderUser);
+
+        boolean result = orderService.isUserOwner(user, order);
+
+        assertTrue(result, "User should be considered the owner of the order.");
     }
 }
