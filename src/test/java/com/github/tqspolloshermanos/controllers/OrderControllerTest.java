@@ -228,8 +228,6 @@ public class OrderControllerTest {
     @Test
     @WithMockUser
     void testGetOrderById_OrderNotFound() {
-        User user = new User();
-        user.setId(1L);
         when(orderService.getOrderById(1L)).thenReturn(Optional.empty());
 
         ResponseEntity<OrderDto> response = orderController.getOrderById(user, 1L);
@@ -239,8 +237,6 @@ public class OrderControllerTest {
     @Test
     @WithMockUser
     void testGetOrderById_NotUserOrder() {
-        User user = new User();
-        user.setId(1L);
         User otherUser = new User();
         otherUser.setId(2L);
         Order order = new Order();
@@ -255,8 +251,6 @@ public class OrderControllerTest {
     @Test
     @WithMockUser
     void testGetOrderById_Success() {
-        User user = new User();
-        user.setId(1L);
         Order order = new Order();
         order.setUser(user);
         order.setRestaurant(new Restaurant());

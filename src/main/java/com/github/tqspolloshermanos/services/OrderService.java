@@ -2,7 +2,6 @@ package com.github.tqspolloshermanos.services;
 
 import com.github.tqspolloshermanos.entities.EOrderStatus;
 import com.github.tqspolloshermanos.entities.Order;
-import com.github.tqspolloshermanos.entities.Restaurant;
 import com.github.tqspolloshermanos.entities.User;
 import com.github.tqspolloshermanos.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;

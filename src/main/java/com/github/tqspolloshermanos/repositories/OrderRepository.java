@@ -2,7 +2,6 @@ package com.github.tqspolloshermanos.repositories;
 
 import com.github.tqspolloshermanos.entities.EOrderStatus;
 import com.github.tqspolloshermanos.entities.Order;
-import com.github.tqspolloshermanos.entities.Restaurant;
 import com.github.tqspolloshermanos.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,7 +12,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     boolean existsByUserAndStatus(User user, EOrderStatus status);
 
-    List<Order> findAllByRestaurantId(Long restaurant_id);
+    List<Order> findAllByRestaurantId(Long restaurantId);
 
-    List<Order> findAllByRestaurantIdAndStatus(Long restaurant_id, EOrderStatus status);
+    List<Order> findAllByRestaurantIdAndStatus(Long restaurantId, EOrderStatus status);
 }
