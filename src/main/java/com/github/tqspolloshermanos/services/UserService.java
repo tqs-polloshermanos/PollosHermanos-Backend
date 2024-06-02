@@ -34,6 +34,11 @@ public class UserService {
         return users;
     }
 
+    public boolean isUserEmployee(User user) {
+        RoleEnum role = user.getRole().getName();
+        return role == RoleEnum.ADMIN || role == RoleEnum.SUPER_ADMIN;
+    }
+
     public User createAdministrator(RegisterUserDto input) {
         // Check if the user already exists
         Optional<User> existingUser = userRepository.findByEmail(input.getEmail());
