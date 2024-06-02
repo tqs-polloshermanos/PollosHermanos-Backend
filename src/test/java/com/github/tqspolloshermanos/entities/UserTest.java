@@ -21,7 +21,7 @@ class UserTest {
         User user = new User();
 
         // Set values
-        user.setId(1);
+        user.setId(1L);
         user.setFullName("John Doe");
         user.setEmail("john@example.com");
         user.setPassword("password");

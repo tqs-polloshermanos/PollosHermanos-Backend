@@ -22,22 +22,15 @@ public class ProductController {
         this.productService = productService;
     }
 
-    private ProductDto convertToDto(Product product) {
-        ProductDto dto = new ProductDto();
-        dto.setId(product.getId());
-        dto.setName(product.getName());
-        dto.setRestaurantId(product.getRestaurant().getId());
-        dto.setRestaurantName(product.getRestaurant().getName());
-        dto.setCuisineType(product.getRestaurant().getCuisineType());
-        dto.setDescription(product.getDescription());
-        dto.setPrice(product.getPrice());
-        return dto;
-    }
+
 
     @GetMapping
     public List<ProductDto> getAllProducts() {
         List<Product> products = productService.findAll();
-        return products.stream().map(this::convertToDto).toList();
+        List<ProductDto> productDtos = products.stream()
+                .map(product -> new ProductDto(product))
+                .collect(Collectors.toList());
+        return productDtos;
     }
 
     @GetMapping("/{id}")
@@ -46,7 +39,7 @@ public class ProductController {
         if (product.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        ProductDto productDto = convertToDto(product.get());
+        ProductDto productDto = new ProductDto(product.get());
         return ResponseEntity.ok(productDto);
     }
 
@@ -56,7 +49,11 @@ public class ProductController {
         if (products.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        List<ProductDto> productDtos = products.stream().map(this::convertToDto).toList();
+
+        List<ProductDto> productDtos = products.stream()
+                .map(product -> new ProductDto(product))
+                .collect(Collectors.toList());
+
         return ResponseEntity.ok(productDtos);
     }
 }

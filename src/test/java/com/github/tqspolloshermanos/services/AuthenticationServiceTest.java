@@ -46,7 +46,7 @@ class AuthenticationServiceTest {
     void testAuthenticate_Success() {
         // Given
         LoginUserDto input = new LoginUserDto().setEmail("user@example.com").setPassword("password");
-        User user = new User().setId(1).setEmail("user@example.com").setPassword("encodedPassword");
+        User user = new User().setId(1L).setEmail("user@example.com").setPassword("encodedPassword");
         when(userRepository.findByEmail("user@example.com")).thenReturn(Optional.of(user));
 
         // When
@@ -81,7 +81,7 @@ class AuthenticationServiceTest {
         userRole.setId(1);
         userRole.setName(RoleEnum.USER);
         User newUser = new User()
-                .setId(1)
+                .setId(1L)
                 .setFullName("John Doe")
                 .setEmail("john.doe@example.com")
                 .setPassword("encodedPassword")

@@ -41,8 +41,8 @@ class UserServiceTest {
     void testAllUsers() {
         // Given
         List<User> userList = new ArrayList<>();
-        userList.add(new User().setId(1).setFullName("User 1").setEmail("user1@example.com"));
-        userList.add(new User().setId(2).setFullName("User 2").setEmail("user2@example.com"));
+        userList.add(new User().setId(1L).setFullName("User 1").setEmail("user1@example.com"));
+        userList.add(new User().setId(2L).setFullName("User 2").setEmail("user2@example.com"));
 
         when(userRepository.findAll()).thenReturn(userList);
 

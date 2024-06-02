@@ -22,7 +22,7 @@ class UserControllerTest {
 
         // Create a test user
         User user = new User();
-        user.setId(1);
+        user.setId(1L);
         user.setEmail("test@example.com");
 
         // Mock Authentication
