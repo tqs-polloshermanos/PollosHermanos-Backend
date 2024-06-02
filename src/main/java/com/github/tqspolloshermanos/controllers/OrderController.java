@@ -86,7 +86,7 @@ public class OrderController {
     }
 
     @PatchMapping("/{orderId}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     public ResponseEntity<?> updateOrderStatus(@PathVariable Long orderId,
                                                @RequestBody StatusChangeDto body) {
         if (body.getStatus() == null) {
