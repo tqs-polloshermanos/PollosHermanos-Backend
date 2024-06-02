@@ -8,8 +8,10 @@ import com.github.tqspolloshermanos.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class OrderService {
@@ -39,8 +41,16 @@ public class OrderService {
 
     // Actions only for employees
 
-    public List<Order> getRestaurantOrders(Long restaurantId) {
-        return orderRepository.findAllByRestaurantId(restaurantId);
+    public List<Order> getRestaurantOrders(Long restaurantId, Set<EOrderStatus> statuses) {
+        if (statuses.isEmpty()) {
+            return orderRepository.findAllByRestaurantId(restaurantId);
+        }
+
+        List<Order> orders = new java.util.ArrayList<>(Collections.emptyList());
+        for (EOrderStatus status : statuses) {
+            orders.addAll(orderRepository.findAllByRestaurantIdAndStatus(restaurantId, status));
+        }
+        return orders;
     }
 
     public void updateOrderStatus(Order order, EOrderStatus status) {

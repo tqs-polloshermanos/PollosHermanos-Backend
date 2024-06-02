@@ -71,14 +71,17 @@ public class OrderController {
 
     @GetMapping("/restaurant/{restaurantId}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    public ResponseEntity<?> getOrdersByRestaurant(@PathVariable Long restaurantId) {
+    public ResponseEntity<?> getOrdersByRestaurantAndStatus(@PathVariable Long restaurantId, @RequestBody List<EOrderStatus> statuses) {
         Optional<Restaurant> restaurantOpt = restaurantService.findRestaurantById(restaurantId);
         if (restaurantOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
+        Set<EOrderStatus> statusSet = new HashSet<>(statuses);
+
         List<OrderDto> orderDtos = new ArrayList<>();
-        orderService.getRestaurantOrders(restaurantId).forEach((order -> orderDtos.add(new OrderDto(order))));
+        orderService.getRestaurantOrders(restaurantId, statusSet).forEach((order -> orderDtos.add(new OrderDto(order))));
+
         return ResponseEntity.ok(orderDtos);
     }
 
