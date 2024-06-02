@@ -7,10 +7,7 @@ import com.github.tqspolloshermanos.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -28,6 +25,14 @@ public class OrderService {
     }
     public boolean userHasPendingOrders(User user) {
         return orderRepository.existsByUserAndStatus(user, EOrderStatus.PENDING);
+    }
+
+    public boolean isOrderPaidFor(Order order) {
+        return !order.getStatus().equals(EOrderStatus.PENDING);
+    }
+
+    public boolean isUserOwner(User user, Order order) {
+        return Objects.equals(order.getUser().getId(), user.getId());
     }
 
     public Order saveOrder(Order order) {

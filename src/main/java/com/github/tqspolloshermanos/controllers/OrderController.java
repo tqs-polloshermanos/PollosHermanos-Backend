@@ -163,4 +163,28 @@ public class OrderController {
         order = orderService.saveOrder(order);
         return ResponseEntity.ok(new OrderDto(order));
     }
+
+    @PostMapping("/payment/{orderId}")
+    public ResponseEntity<String> payForOrder(@AuthenticationPrincipal User user, @PathVariable Long orderId) {
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        Optional<Order> orderOpt = orderService.getOrderById(orderId);
+        if (orderOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found");
+        }
+
+        if (orderService.isOrderPaidFor(orderOpt.get())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Order has been already paid for");
+        }
+
+        if (!userService.isUserEmployee(user) && !orderService.isUserOwner(user, orderOpt.get())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("This order does not belong to this user");
+        }
+
+        orderService.updateOrderStatus(orderOpt.get(), EOrderStatus.PROCESSING);
+        return ResponseEntity.ok("Order paid for successfully");
+    }
+
 }
