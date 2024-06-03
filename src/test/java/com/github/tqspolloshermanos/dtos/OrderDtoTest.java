@@ -41,6 +41,7 @@ public class OrderDtoTest {
         order.setStatus(EOrderStatus.PENDING);
         order.setRestaurant(restaurant);
         order.setOrderItems(Arrays.asList(orderItem));
+        order.setOrderNumber(1);
 
         // Exercise
         OrderDto orderDto = new OrderDto(order);
@@ -54,5 +55,6 @@ public class OrderDtoTest {
         assertEquals(order.getOrderDate(), orderDto.getOrderDate());
         assertEquals(order.getStatus(), orderDto.getStatus());
         assertEquals(1, orderDto.getOrderItems().size());
+        assertEquals(1, orderDto.getOrderNumber());
     }
 }
