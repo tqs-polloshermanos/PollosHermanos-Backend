@@ -5,10 +5,7 @@ import com.github.tqspolloshermanos.dtos.OrderDto;
 import com.github.tqspolloshermanos.dtos.PlaceOrderDto;
 import com.github.tqspolloshermanos.dtos.StatusChangeDto;
 import com.github.tqspolloshermanos.entities.*;
-import com.github.tqspolloshermanos.services.OrderService;
-import com.github.tqspolloshermanos.services.ProductService;
-import com.github.tqspolloshermanos.services.RestaurantService;
-import com.github.tqspolloshermanos.services.UserService;
+import com.github.tqspolloshermanos.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +25,12 @@ public class OrderController {
     private final ProductService productService;
     private final RestaurantService restaurantService;
     private final UserService userService;
+    private final OrderQueueService orderQueueService;
 
     @Autowired
-    public OrderController(OrderService orderService, ProductService productService, RestaurantService restaurantService, UserService userService) {
+    public OrderController(OrderService orderService, OrderQueueService orderQueueService, ProductService productService, RestaurantService restaurantService, UserService userService) {
         this.orderService = orderService;
+        this.orderQueueService = orderQueueService;
         this.productService = productService;
         this.restaurantService = restaurantService;
         this.userService = userService;
@@ -132,11 +131,16 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Restaurant is not found");
         }
 
+        Restaurant restaurant = restaurantOpt.get();
+
         Order order = new Order();
         order.setUser(user);
         order.setRestaurant(restaurantOpt.get());
         order.setOrderDate(LocalDateTime.now());
         order.setStatus(EOrderStatus.PENDING);
+
+        Integer orderNumber = orderQueueService.generateOrderNumber(restaurant);
+        order.setOrderNumber(orderNumber);
 
         for (OrderItemDto dto : items) {
 
@@ -187,4 +191,40 @@ public class OrderController {
         return ResponseEntity.ok("Order paid for successfully");
     }
 
+    @GetMapping("/queue/{restaurantId}")
+    public ResponseEntity<Map<String, Object>> getOrderQueue(@PathVariable Long restaurantId) {
+        Optional<Restaurant> restaurantOpt = restaurantService.findRestaurantById(restaurantId);
+        if (restaurantOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        List<Order> orders = orderService.getPendingOrdersByRestaurant(restaurantId);
+        List<OrderDto> orderDtos = new ArrayList<>();
+        orders.forEach(order -> orderDtos.add(new OrderDto(order)));
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("orders", orderDtos);
+        response.put("count", orders.size());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/done/{restaurantId}")
+    public ResponseEntity<Map<String, Object>> getDoneOrders(@PathVariable Long restaurantId) {
+        Optional<Restaurant> restaurantOpt = restaurantService.findRestaurantById(restaurantId);
+        if (restaurantOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        List<Order> orders = orderService.getDoneOrdersByRestaurant(restaurantId);
+        List<OrderDto> orderDtos = new ArrayList<>();
+        orders.forEach(order -> orderDtos.add(new OrderDto(order)));
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("orders", orderDtos);
+        response.put("count", orders.size());
+
+        return ResponseEntity.ok(response);
+    }
 }
+

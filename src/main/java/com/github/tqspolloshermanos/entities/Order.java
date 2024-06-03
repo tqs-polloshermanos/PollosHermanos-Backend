@@ -36,6 +36,9 @@ public class Order {
     @JsonManagedReference
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @Column(name = "order_number")
+    private Integer orderNumber;
+
     public Order() {
     }
 
@@ -93,5 +96,13 @@ public class Order {
 
     public void setOrderItems(List<OrderItem> OrderItems) {
         this.orderItems = OrderItems;
+    }
+
+    public Integer getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(Integer orderNumber) {
+        this.orderNumber = orderNumber;
     }
 }
