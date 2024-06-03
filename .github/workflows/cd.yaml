@@ -28,8 +28,7 @@ jobs:
           context: . 
           push: true
           tags: gcr.io/${{ secrets.GCP_PROJECT_ID }}/tqs-ph-backend:latest
-          build-args: |
-            HTTP_PORT=8080
+          file: ./Dockerfile # Ensure the path to the Dockerfile is correct
 
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@main
@@ -37,8 +36,8 @@ jobs:
           image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/tqs-ph-backend:latest
           service: polloshermanos-backend
           region: europe-central2
-          # platform: managed
-          # allow-unauthenticated: true
+          platform: managed
+          allow-unauthenticated: true
           env_vars: |
               FOO=bar
               ZIP=zap
