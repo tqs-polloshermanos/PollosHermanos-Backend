@@ -37,7 +37,7 @@ jobs:
         run: gcloud auth list
 
       - name: Configure docker for GCP
-        run: gcloud auth configure-docker
+        run: gcloud auth configure-docker gcr.io
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
