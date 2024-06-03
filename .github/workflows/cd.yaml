@@ -6,44 +6,39 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'zulu'
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
 
-    - name: Build with Maven
-      run: mvn clean package
+      - name: Configure docker for GCP
+        run: gcloud auth configure-docker
 
-    - name: Authenticate to Google Cloud
-      run: echo "${{ secrets.GCP_SA_KEY }}" | base64 --decode > ${{ runner.temp }}/gcloud.json
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: . 
+          push: true
+          tags: gcr.io/${{ secrets.GCP_PROJECT_ID }}/tqs-ph-backend:latest
+          build-args: |
+            HTTP_PORT=8080
 
-    - name: Set up Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
-      with:
-        service_account_key: ${{ runner.temp }}/gcloud.json
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-
-    - name: Configure Docker to use the gcloud command-line tool as a credential helper
-      run: gcloud auth configure-docker
-
-    - name: Build Docker image
-      run: docker build . -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/tqs-ph-backend:latest
-
-    - name: Push Docker image
-      run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/tqs-ph-backend:latest
-
-    - name: Deploy to Cloud Run
-      run: |
-        gcloud run deploy tqs-ph-backend \
-          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/tqs-ph-backend:latest \
-          --platform managed \
-          --region europe-central2 \
-          --allow-unauthenticated
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@main
+        with:
+          image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/tqs-ph-backend:latest
+          service: takeiteasy-backend
+          region: europe-central2
+          # platform: managed
+          # allow-unauthenticated: true
+          env_vars: |
+              FOO=bar
+              ZIP=zap
