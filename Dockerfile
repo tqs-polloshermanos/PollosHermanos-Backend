@@ -1,5 +1,5 @@
 FROM openjdk:17-jdk-alpine
-# dummy change to test cd pipeline
+
 VOLUME /tmp
 EXPOSE 8085
 
