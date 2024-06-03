@@ -191,14 +191,14 @@ public class OrderController {
         return ResponseEntity.ok("Order paid for successfully");
     }
 
-    @GetMapping("/queue/{restaurantId}")
+    @GetMapping("/in-progress/{restaurantId}")
     public ResponseEntity<Map<String, Object>> getOrderQueue(@PathVariable Long restaurantId) {
         Optional<Restaurant> restaurantOpt = restaurantService.findRestaurantById(restaurantId);
         if (restaurantOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
-        List<Order> orders = orderService.getPendingOrdersByRestaurant(restaurantId);
+        List<Order> orders = orderService.getProcessingOrdersByRestaurant(restaurantId);
         List<OrderDto> orderDtos = new ArrayList<>();
         orders.forEach(order -> orderDtos.add(new OrderDto(order)));
 

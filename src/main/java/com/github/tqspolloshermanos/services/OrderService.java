@@ -62,8 +62,8 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public List<Order> getPendingOrdersByRestaurant(Long restaurantId) {
-        return orderRepository.findByRestaurantIdAndStatusOrderByOrderNumberAsc(restaurantId, EOrderStatus.PENDING);
+    public List<Order> getProcessingOrdersByRestaurant(Long restaurantId) {
+        return orderRepository.findByRestaurantIdAndStatusOrderByOrderNumberAsc(restaurantId, EOrderStatus.PROCESSING);
     }
 
     public List<Order> getDoneOrdersByRestaurant(Long restaurantId) {
