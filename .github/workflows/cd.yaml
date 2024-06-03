@@ -35,7 +35,7 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@main
         with:
           image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/tqs-ph-backend:latest
-          service: takeiteasy-backend
+          service: polloshermanos-backend
           region: europe-central2
           # platform: managed
           # allow-unauthenticated: true
