@@ -71,7 +71,7 @@ public class OrderController {
 
     @GetMapping("/restaurant/{restaurantId}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    public ResponseEntity<?> getOrdersByRestaurantAndStatus(@PathVariable Long restaurantId, @RequestBody List<EOrderStatus> statuses) {
+    public ResponseEntity<?> getOrdersByRestaurantAndStatus(@PathVariable Long restaurantId, @RequestParam List<EOrderStatus> statuses) {
         Optional<Restaurant> restaurantOpt = restaurantService.findRestaurantById(restaurantId);
         if (restaurantOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
