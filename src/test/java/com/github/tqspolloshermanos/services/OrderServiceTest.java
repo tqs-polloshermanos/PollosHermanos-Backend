@@ -10,10 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -138,5 +135,38 @@ class OrderServiceTest {
         boolean result = orderService.isUserOwner(user, order);
 
         assertTrue(result, "User should be considered the owner of the order.");
+    }
+
+    @Test
+    void testGetProcessingOrdersByRestaurant() {
+        Long restaurantId = 1L;
+        List<Order> expectedOrders = new ArrayList<>();
+        when(orderRepository.findByRestaurantIdAndStatusOrderByOrderNumberAsc(restaurantId, EOrderStatus.PROCESSING)).thenReturn(expectedOrders);
+
+        List<Order> actualOrders = orderService.getProcessingOrdersByRestaurant(restaurantId);
+
+        assertEquals(expectedOrders, actualOrders);
+    }
+
+    @Test
+    void testGetDoneOrdersByRestaurant() {
+        Long restaurantId = 1L;
+        List<Order> expectedOrders = new ArrayList<>();
+        when(orderRepository.findByRestaurantIdAndStatusOrderByOrderNumberAsc(restaurantId, EOrderStatus.DONE)).thenReturn(expectedOrders);
+
+        List<Order> actualOrders = orderService.getDoneOrdersByRestaurant(restaurantId);
+
+        assertEquals(expectedOrders, actualOrders);
+    }
+
+    @Test
+    void testGetLastOrderForRestaurant() {
+        Long restaurantId = 1L;
+        Optional<Order> expectedOrder = Optional.empty();
+        when(orderRepository.findTopByRestaurantIdOrderByOrderNumberDesc(restaurantId)).thenReturn(expectedOrder);
+
+        Optional<Order> actualOrder = orderService.getLastOrderForRestaurant(restaurantId);
+
+        assertEquals(expectedOrder, actualOrder);
     }
 }
