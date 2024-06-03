@@ -44,5 +44,5 @@ jobs:
         gcloud run deploy tqs-ph-backend \
           --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/tqs-ph-backend:latest \
           --platform managed \
-          --region europe-west1 \
+          --region europe-central2 \
           --allow-unauthenticated
