@@ -11,13 +11,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
@@ -70,5 +71,72 @@ class OrderServiceTest {
         Order result = orderService.saveOrder(order);
 
         assertEquals(1L, result.getId());
+    }
+
+    @Test
+    void testGetRestaurantOrders_EmptyStatuses() {
+        Long restaurantId = 1L;
+        List<Order> orders = List.of(new Order(), new Order());
+        when(orderRepository.findAllByRestaurantId(restaurantId)).thenReturn(orders);
+
+        List<Order> result = orderService.getRestaurantOrders(restaurantId, Collections.emptySet());
+
+        assertEquals(orders.size(), result.size());
+        verify(orderRepository, times(1)).findAllByRestaurantId(restaurantId);
+    }
+
+    @Test
+    void testGetRestaurantOrders_WithStatuses() {
+        Long restaurantId = 1L;
+        Set<EOrderStatus> statuses = Set.of(EOrderStatus.PENDING, EOrderStatus.PROCESSING);
+        Order order1 = new Order();
+        Order order2 = new Order();
+        List<Order> pendingOrders = List.of(order1);
+        List<Order> paidOrders = List.of(order2);
+
+        when(orderRepository.findAllByRestaurantIdAndStatus(restaurantId, EOrderStatus.PENDING)).thenReturn(pendingOrders);
+        when(orderRepository.findAllByRestaurantIdAndStatus(restaurantId, EOrderStatus.PROCESSING)).thenReturn(paidOrders);
+
+        List<Order> result = orderService.getRestaurantOrders(restaurantId, statuses);
+
+        assertEquals(2, result.size());
+        verify(orderRepository, times(1)).findAllByRestaurantIdAndStatus(restaurantId, EOrderStatus.PENDING);
+        verify(orderRepository, times(1)).findAllByRestaurantIdAndStatus(restaurantId, EOrderStatus.PROCESSING);
+    }
+
+    @Test
+    void testUpdateOrderStatus() {
+        Order order = new Order();
+        EOrderStatus newStatus = EOrderStatus.PROCESSING;
+
+        orderService.updateOrderStatus(order, newStatus);
+
+        assertEquals(newStatus, order.getStatus());
+        verify(orderRepository, times(1)).save(order);
+    }
+
+    @Test
+    void testIsOrderPaidFor() {
+        Order order = new Order();
+        order.setStatus(EOrderStatus.PENDING);
+
+        boolean result = orderService.isOrderPaidFor(order);
+
+        assertFalse(result, "Order with PENDING status should not be considered paid for.");
+    }
+
+    @Test
+    void testIsUserOwner() {
+        User user = new User();
+        user.setId(1L);
+
+        Order order = new Order();
+        User orderUser = new User();
+        orderUser.setId(1L);
+        order.setUser(orderUser);
+
+        boolean result = orderService.isUserOwner(user, order);
+
+        assertTrue(result, "User should be considered the owner of the order.");
     }
 }

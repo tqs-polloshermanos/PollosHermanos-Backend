@@ -14,6 +14,7 @@ public class OrderDto {
     private ECuisineType cuisineType;
     private LocalDateTime orderDate;
     private EOrderStatus status;
+    private int orderNumber;
     private final List<OrderItemDto> orderItems = new ArrayList<>();
 
     public OrderDto() {
@@ -30,6 +31,7 @@ public class OrderDto {
         restaurantId = restaurant.getId();
         restaurantName = restaurant.getName();
         cuisineType = restaurant.getCuisineType();
+        orderNumber = order.getOrderNumber();
 
         order.getOrderItems().forEach((item) -> orderItems.add(new OrderItemDto(item)));
     }
@@ -92,5 +94,13 @@ public class OrderDto {
 
     public List<OrderItemDto> getOrderItems() {
         return orderItems;
+    }
+
+    public int getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
     }
 }
