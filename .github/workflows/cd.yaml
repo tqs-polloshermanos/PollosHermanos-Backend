@@ -24,14 +24,14 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: 'google-github-actions/auth@v2'
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          project_id: 'tqs-polloshermanos'
           service_account: 'githubhactions@tqs-polloshermanos.iam.gserviceaccount.com'
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          project_id: 'tqs-polloshermanos'
 
       - name: Print Authenticated Account
         run: gcloud auth list
@@ -44,13 +44,13 @@ jobs:
         with:
           context: . 
           push: true
-          tags: gcr.io/${{ secrets.GCP_PROJECT_ID }}/tqs-ph-backend:latest
+          tags: gcr.io/tqs-polloshermanos/tqs-ph-backend:latest
           file: ./Dockerfile
 
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@main
         with:
-          image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/tqs-ph-backend:latest
+          image: gcr.io/tqs-polloshermanos/tqs-ph-backend:latest
           service: polloshermanos-backend
           region: europe-central2
           platform: managed
