@@ -11,12 +11,10 @@ import java.util.Optional;
 public class OrderQueueService {
 
     private final OrderService orderService;
-    private final RestaurantService restaurantService;
     private static final int MAX_ORDER_NUMBER = 999;
 
-    public OrderQueueService(OrderService orderService, RestaurantService restaurantService) {
+    public OrderQueueService(OrderService orderService) {
         this.orderService = orderService;
-        this.restaurantService = restaurantService;
     }
 
     @Transactional
