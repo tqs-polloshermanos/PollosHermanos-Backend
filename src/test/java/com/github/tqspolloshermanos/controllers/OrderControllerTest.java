@@ -77,7 +77,7 @@ public class OrderControllerTest {
     @Test
     @WithMockUser
     void testGetUserOrderHistory() {
-        Order order = new Order(user, restaurant, LocalDateTime.now(), EOrderStatus.PENDING, Collections.emptyList());
+        Order order = new Order(user, restaurant, LocalDateTime.now(), EOrderStatus.PENDING, Collections.emptyList(), 0);
         when(orderService.getUserOrders(any(User.class))).thenReturn(List.of(order));
 
         ResponseEntity<List<OrderDto>> response = orderController.getUserOrderHistory(user);
@@ -107,7 +107,7 @@ public class OrderControllerTest {
 
         when(restaurantService.findRestaurantById(anyLong())).thenReturn(Optional.of(restaurant));
         when(productService.findById(anyLong())).thenReturn(Optional.of(product));
-        when(orderService.saveOrder(any(Order.class))).thenReturn(new Order(user, restaurant, LocalDateTime.now(), EOrderStatus.PENDING, Collections.emptyList()));
+        when(orderService.saveOrder(any(Order.class))).thenReturn(new Order(user, restaurant, LocalDateTime.now(), EOrderStatus.PENDING, Collections.emptyList(), 0));
 
         ResponseEntity<?> response = orderController.placeOrder(user, placeOrderDto);
 
@@ -254,6 +254,7 @@ public class OrderControllerTest {
         Order order = new Order();
         order.setUser(user);
         order.setRestaurant(new Restaurant());
+        order.setOrderNumber(0);
         when(orderService.getOrderById(1L)).thenReturn(Optional.of(order));
         when(userService.isUserEmployee(user)).thenReturn(false);
 

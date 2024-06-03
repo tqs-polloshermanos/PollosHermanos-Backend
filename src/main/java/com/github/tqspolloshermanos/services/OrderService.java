@@ -61,4 +61,16 @@ public class OrderService {
         order.setStatus(status);
         orderRepository.save(order);
     }
+
+    public List<Order> getProcessingOrdersByRestaurant(Long restaurantId) {
+        return orderRepository.findByRestaurantIdAndStatusOrderByOrderNumberAsc(restaurantId, EOrderStatus.PROCESSING);
+    }
+
+    public List<Order> getDoneOrdersByRestaurant(Long restaurantId) {
+        return orderRepository.findByRestaurantIdAndStatusOrderByOrderNumberAsc(restaurantId, EOrderStatus.DONE);
+    }
+
+    public Optional<Order> getLastOrderForRestaurant(Long restaurantId) {
+        return orderRepository.findTopByRestaurantIdOrderByOrderNumberDesc(restaurantId);
+    }
 }
