@@ -44,7 +44,7 @@ jobs:
         with:
           context: . 
           push: true
-          tags: tqs-polloshermanos/backend:latest
+          tags: gcr.io/tqs-polloshermanos/backend:latest
           file: ./Dockerfile
 
       - name: Deploy to Cloud Run
@@ -52,7 +52,7 @@ jobs:
         with:
           image: gcr.io/tqs-polloshermanos/backend:latest
           service: polloshermanos-backend
-          region: europe-central2
+          region: us
           platform: managed
           allow-unauthenticated: true
           env_vars: |
