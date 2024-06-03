@@ -36,18 +36,19 @@ public class Order {
     @JsonManagedReference
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @Column(name = "order_number")
+    @Column(nullable = false, name = "order_number")
     private Integer orderNumber;
 
     public Order() {
     }
 
-    public Order(User user, Restaurant restaurant, LocalDateTime orderDate, EOrderStatus status, List<OrderItem> orderItems) {
+    public Order(User user, Restaurant restaurant, LocalDateTime orderDate, EOrderStatus status, List<OrderItem> orderItems, Integer orderNumber) {
         this.user = user;
         this.restaurant = restaurant;
         this.orderDate = orderDate;
         this.status = status;
         this.orderItems = orderItems;
+        this.orderNumber = orderNumber;
     }
 
     public Long getId() {
